@@ -54,9 +54,9 @@ public class PlacementManager : MonoBehaviour
     private int _tempInventoryIndex = -1;
 
     // Hover detection
-    [SerializeField]
+    // [SerializeField]
     private GameObject hoveredObject;
-    [SerializeField]
+    // [SerializeField]
     private PlacedObjectData hoveredObjectData;
 
     void Start()
@@ -158,8 +158,6 @@ public class PlacementManager : MonoBehaviour
 
     public void StartInventory() {
 
-        // Debug.Log("start inventory");
-
         if (hoveredObject != null && hoveredObject.GetComponent<PlacedObjectData>() != null) {
             
             // Instantiate the inventory state
@@ -170,22 +168,12 @@ public class PlacementManager : MonoBehaviour
             _inputManager.OnClick += TryCancelInventory;
             _inputManager.OnExit += CancelInventory;
         }
-        // else {
-        //     Debug.Log("tried to start inventory but smth was null");
-        // }
-        
-        // // Attach listeners to events
-        // _inputManager.OnInventory += PlaceInInventory;
-        // _inputManager.OnClick += TryCancelInventory;
-        // _inputManager.OnExit += CancelInventory;
     }
 
     // Clicking *outside* the currently selected object
     private void TryCancelInventory() {
-        // Debug.Log("Trying to cancel inventory (object was deselected/clicked outside of)");
         if (buildingState != null) {
             bool clickOutcome = buildingState.OnClickDetected(Vector3Int.one);
-            // Debug.Log(clickOutcome);
             if (clickOutcome) {
                 CancelInventory();
             }
@@ -219,7 +207,6 @@ public class PlacementManager : MonoBehaviour
 
     private void PlaceInInventory() {
         if (buildingState != null) {
-            // Debug.Log("I key pressed / PlaceInInventory()");
             buildingState.OnInventoryKeyPressed();      // handle inventory placement logic in InventoryState.cs
             CancelInventory();
         }
@@ -235,9 +222,6 @@ public class PlacementManager : MonoBehaviour
 
         // Instantiate the removal state
         buildingState = new RemovalState(_inputManager, grid, gridPlacementData, placer, preview, audioManager);
-
-        // Disable all object terrain
-        // terrainManager.ToggleAllTerrain(false);
 
         // Attach listeners to events
         _inputManager.OnClick += PlaceObject;
@@ -277,7 +261,7 @@ public class PlacementManager : MonoBehaviour
 
         buildingState = new PlacementState(objectID, database, grid, gridPlacementData, placer, preview, audioManager, creativeMenu);
 
-        // NEW: Enable all object terrain
+        // Enable all object terrain
         terrainManager.ToggleAllTerrain(true);
 
         _tempInventoryIndex = inventorySlotIndex;
@@ -318,7 +302,6 @@ public class PlacementManager : MonoBehaviour
 
     private void CancelPlacement_ReturnToInventory() {
 
-        // Debug.Log("Cancel placement & return to inventory");
         CancelPlacement();
 
         // Detach listeners from events
@@ -330,12 +313,8 @@ public class PlacementManager : MonoBehaviour
         _tempInventoryIndex = -1;
     }
 
-    // Place an object
-    // POLISH: This is a misleading name because it's essentially
-    // detecting a click on an object -- and letting the active 'building state'
-    // handle it accordingly
-    // the click leads to an object placement if that's the active state,
-    // and an object removal if *that's* the active state
+    // Detecting a click on an object -- and letting the active Building State handle it accordingly
+    // i.e. Click leads to an object placement in the overworld if PlacementState is active
     private void PlaceObject()
     {
 
@@ -372,8 +351,6 @@ public class PlacementManager : MonoBehaviour
 
             // If no objects remaining, exit placement
             if (numRemainingObjects == 0) {
-
-                // Debug.Log("Inventory slot has been emptied. No objects remaining; exiting placement.");
                 
                 CancelPlacement();
 
@@ -381,8 +358,6 @@ public class PlacementManager : MonoBehaviour
                 _inputManager.OnClick -= PlaceObject_UpdateInventory;
                 _inputManager.OnRotate -= RotateObject;
                 _inputManager.OnExit -= CancelPlacement_ReturnToInventory;
-            } else {
-                // Debug.Log("There are " + numRemainingObjects.ToString() + " objects left in this slot.");
             }
         }
     }
