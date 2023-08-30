@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// NOTE: Currently not in use. An earlier representation of an object-based terrain cell.
 public class ObjectTerrainCell : MonoBehaviour
 {
     // public bool checkingForCollisions = false;
-
-    // -1 by default; indicates no neighboring/colliding terrain cell
-    // public GameObject neighborCell;
     public int neighborIndex = -1;
 
     // For drawing Physics.OverlapBox
@@ -34,8 +32,6 @@ public class ObjectTerrainCell : MonoBehaviour
 
     // Check for collisions w/ a neighboring cell
     public int CheckForCollisions() {
-        // Activate collider component
-        // GetComponent<Collider>().enabled = true;
         
         Collider[] neighboringColliders = Physics.OverlapBox(_boxCenter, _boxHalfExtents, _boxRotation, _terrainLayerMask);
         Debug.Log("Number of neighboring colliders found: " + neighboringColliders.Length.ToString());
@@ -44,13 +40,9 @@ public class ObjectTerrainCell : MonoBehaviour
             GameObject neighborCell = neighboringColliders[0].gameObject;
             neighborIndex = neighborCell.transform.parent.gameObject.GetComponent<ObjectTerrain>().placedObjectIndex;
         } else {
-            neighborIndex = -1; // not sure if necessary?
+            neighborIndex = -1;
         }
         return neighborIndex;
-
-            //         GameObject neighborCell = other.gameObject;
-    //         neighborIndex = neighborCell.transform.parent.gameObject.GetComponent<ObjectTerrain>().placedObjectIndex;
-    //         Debug.Log("neighbor index: " + neighborIndex.ToString());
     }
 
     // private void OnDrawGizmosSelected() {
@@ -72,22 +64,6 @@ public class ObjectTerrainCell : MonoBehaviour
     // }
 
     public void SetToTerrainLayer() {
-        // Debug.Log("Set to terrain layer");
         gameObject.layer = terrainLayerNum;
     }
-
-    // private void OnTriggerEnter(Collider other) {
-
-    //     if (other.gameObject.layer == LayerMask.NameToLayer("Terrain")) {
-    //         Debug.Log("Found collision with terrain");
-    //         // transform.parent.gameObject.SendMessage("HandleCollision", gameObject, other.gameObject);
-    //         // Debug.Log("collision detected");
-            
-    //         // transform.parent.gameObject.GetComponent<ObjectTerrain>().HandleCollision(gameObject, other.gameObject);
-    //         GameObject neighborCell = other.gameObject;
-    //         neighborIndex = neighborCell.transform.parent.gameObject.GetComponent<ObjectTerrain>().placedObjectIndex;
-    //         Debug.Log("neighbor index: " + neighborIndex.ToString());
-
-    //     }
-    // }
 }

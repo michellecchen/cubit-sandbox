@@ -27,7 +27,14 @@ public class ObjectData {
     [field: SerializeField]
     public GameObject prefab { get; private set; }
 
-    // // new: inventory
-    // [field: SerializeField]
-    // public Texture icon {get; private set; }
+    [field: SerializeField]
+    public ObjectColor color { get; private set; }
+}
+
+// An enumerator for a shape/object's color property
+public enum ObjectColor {
+    Beige,
+    Black,
+    Yellow,
+    White
 }

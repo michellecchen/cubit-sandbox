@@ -26,10 +26,8 @@ public class InventorySlot : MonoBehaviour
         _button = GetComponent<Button>();
         _textCounter = GetComponentInChildren<TMP_Text>();
 
-        // Disable the button interaction initially, since the slot is empty
-        _button.interactable = false;
-        // Set the initial text counter to be empty (0)
-        UpdateCounter();
+        _button.interactable = false;                           // Disable the button interaction initially, since the slot is empty
+        UpdateCounter();                                        // Set the initial text counter to be empty (0)
 
         renderLayer = LayerMask.NameToLayer("RenderTexture");
     }

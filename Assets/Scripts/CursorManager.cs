@@ -27,7 +27,6 @@ public class CursorManager : MonoBehaviour
     void Update() {
 
         CheckLMB();
-        // CheckRMB();
     }
 
     private void CheckLMB() {
@@ -39,15 +38,6 @@ public class CursorManager : MonoBehaviour
             UpdateCursor(_defaultPointer);
         }
     }
-
-    // private void CheckRMB() {
-    //     if (Input.GetMouseButtonDown(1)) {      // when RMB is clicked
-    //         UpdateCursor(_lookAround);
-    //     }
-    //     if (Input.GetMouseButtonUp(0)) {        // when RMB is released
-    //         UpdateCursor(_defaultPointer);
-    //     }
-    // }
 
     private void UpdateCursor(Texture2D updatedTexture) {
         Cursor.SetCursor(updatedTexture, Vector2.zero, CursorMode.Auto);

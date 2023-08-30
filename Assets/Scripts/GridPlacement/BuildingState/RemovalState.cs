@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// similar to placement state -- except objects get placed into inventory
+// State for removing objects from the overworld.
+// Entered through the Creative Menu's Delete option.
 public class RemovalState : I_BuildingState
 {
     // Index of the object from the placed objects list
@@ -11,16 +12,12 @@ public class RemovalState : I_BuildingState
     // Input manager - for detecting clicks on removable objects
     InputManager inputManager;
 
-    // Grid
-    Grid grid;
+    Grid grid;                                  // Grid
     GridData gridPlacementData;                 // Data for all placed objects wrt grid
 
     // Object-related functionalities
     PlaceObject placeObject;
     DisplayObjectPreview previewObject;
-
-    // // NEW: Inventory
-    // InventoryManager inventory;
 
     AudioManager audioManager;
 
@@ -39,7 +36,7 @@ public class RemovalState : I_BuildingState
 
     #region Interface methods
 
-    // TODO: EDIT!!!
+    // TODO: EDIT
     public void UpdatePlacementState(Vector3Int gridPos) {
         // Validate if the clicked position contains a removable object
         bool isRemovable = RemovableObjectAt(gridPos);
@@ -67,11 +64,6 @@ public class RemovalState : I_BuildingState
         int removedObjectID = gridPlacementData.RemoveObjectAt(occupiedCell);
         // Remove from overworld
         placeObject.Remove(placementData.placedObjectIndex);
-        
-        // // Add to inventory
-        // inventory.AddToInventory(removedObjectID);
-
-
         // Play object removal sound
         audioManager.PlayObjectRemovalSFX();
 

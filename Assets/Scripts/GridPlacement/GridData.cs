@@ -5,11 +5,6 @@ using UnityEngine;
 public class GridData
 {
 
-    // **TODO: use this to impose constraint on height?
-    // leave as 0 if no constraint?
-    // [Header("Define a height for the grid...")];
-    // public int gridHeight = 5;
-
     // Dictionary containing data for all objects currently placed on the grid
     // - keys: cell positions
     // - values: placement data for that cell (is it currently occupied by an object?)
@@ -29,11 +24,9 @@ public class GridData
         // Check if the targeted placement for this object is "legal" (all relevant cells are currently empty/unoccupied)
         foreach (var pos in occupiedCells) {
             
-            // If "illegal," then throw an exception
+            // If "illegal," then log a warning
             if (placementDict.ContainsKey(pos)) {
-                // throw new Exception("PLACEMENT FAILED: One of the cells targeted by this object's placement is already occupied.");
                 Debug.Log("PLACEMENT FAILED: One of the cells targeted by this object's placement is already occupied.");
-                // break;
                 return null;
             }
             
@@ -45,25 +38,14 @@ public class GridData
 
     }
 
-    // private void UpdateHeightDictionary(Vector3Int ) {
-
-    // }
-
-    // Update the maximum recorded height of an object that's been placed
-    private void UpdateMaximumHeight() {
-        // maxVariable = newNumber > maxVariable ? newNumber : maxVariable;
-    }
-
-    // EDIT: Return ID of the removed object
+    // Return ID of the removed object
     public int RemoveObjectAt(Vector3Int gridPos) {
 
-        // Remove all keys representing this object from dictionary
-        // (aka, all cells that object currently occupies)
+        // Remove all keys representing this object from dictionary (AKA all cells the object currently occupies)
         int removedObjectID = placementDict[gridPos].objectID;
         List<Vector3Int> occupiedCells = placementDict[gridPos].occupiedPositions;
 
         foreach (var cellPos in occupiedCells) {
-            
             placementDict.Remove(cellPos);
         }
 
@@ -75,15 +57,11 @@ public class GridData
         List<Vector3Int> occupiedCells = CalculateOccupiedCells(targetGridPos, objectSize);
         
         foreach (var cellPos in occupiedCells) {
-            
-            if (placementDict.ContainsKey(cellPos)) {
-                // Illegal: found one conflicting/already-occupied cell
+            if (placementDict.ContainsKey(cellPos)) {           // Illegal: found one conflicting/already-occupied cell
                 return false;
             }
         }
-
-        // Legal
-        return true;
+        return true;                                            // Legal
     }
 
     // Helper method for 'LegalPlacementAt(...)'
@@ -103,23 +81,18 @@ public class GridData
     }
 
     public int GetObjectIndexAt(Vector3Int gridPos) {
-        // If there's no object at this position in the grid, return -1
-
-        if (!placementDict.ContainsKey(gridPos)) {
+        if (!placementDict.ContainsKey(gridPos)) {              // If there's no object at this position in the grid, return -1
             return -1;
         }
-        // Otherwise, return the index of the object
-        return placementDict[gridPos].placedObjectIndex;
+        return placementDict[gridPos].placedObjectIndex;        // Otherwise, return the index of the object
     }
 
-    // Called by PlacementManager
+    // CALLER: PlacementManager
     public int GetObjectIDAt(Vector3Int gridPos) {
-        // If there's no object occupying this grid position, return -1
-        if (!placementDict.ContainsKey(gridPos)) {
+        if (!placementDict.ContainsKey(gridPos)) {              // If there's no object occupying this grid position, return -1
             return -1;
         }
-        // Otherwise, return the ID of the object
-        return placementDict[gridPos].objectID;
+        return placementDict[gridPos].objectID;                 // Otherwise, return the ID of the object
     }
 }
 

@@ -25,11 +25,6 @@ public class ObjectTerrain : MonoBehaviour
     {
         // Get LayerMask via bitwise left shift operation
         terrainLayerMask = 1 << terrainLayerNum;
-
-        // // Everything starts as inactive
-        // foreach (Transform childCell in transform) {
-        //     childCell.gameObject.SetActive(false);
-        // }
     }
 
     // Create terrain for this object
@@ -41,17 +36,15 @@ public class ObjectTerrain : MonoBehaviour
     {
         placedObjectIndex = objectIndex;
         // CheckForCollisions();
-        // for now just automatically set to terrain layer
         foreach (Transform childCell in transform) {
             childCell.gameObject.layer = terrainLayerNum;
         }
 
     }
 
+    // NOTE: Currently not in use.
     private void CheckForCollisions() {
         foreach (ObjectTerrainCell childCell in GetComponentsInChildren<ObjectTerrainCell>()) {
-            // childCell.gameObject.GetComponent<ObjectTerrainCell>().checkingForCollisions = true;
-            // childCell.checkingForCollisions = true;
             int neighborIndex = childCell.CheckForCollisions();
             if (neighborIndex != -1) {
                 Debug.Log("detected collision with " + neighborIndex.ToString());
@@ -63,116 +56,4 @@ public class ObjectTerrain : MonoBehaviour
             }
         }
     }
-
-    // public void HandleCollision(GameObject childCell, GameObject otherCell) {
-    //     int neighborIndex = otherCell.transform.parent.gameObject.GetComponent<ObjectTerrain>().placedObjectIndex;
-    //     Debug.Log("Neighbor index: " + neighborIndex.ToString());
-    //     childCell.gameObject.GetComponent<ObjectTerrainCell>().checkingForCollisions = false;
-    // }
-
-    //             // GameObject neighbor = neighborCell.transform.parent.gameObject;
-    //             // int neighborIndex = neighbor.GetComponent<ObjectTerrain>().placedObjectIndex;
-    //             Debug.Log("Neighbor index: " + neighborIndex.ToString());
-
-    //             if (neighborIndex != -1)
-    //             {
-
-    //                 // if (inactiveCells.ContainsKey(neighborIndex))
-    //                 // {
-    //                 //     Debug.Log("Existing neighbor found");
-    //                 // }
-    //                 // else
-    //                 // {
-    //                 //     Debug.Log("New neighbor registered");
-    //                 // }
-
-    //                 inactiveCells[neighborIndex].Add(childCell);
-    //                 childCell.SetActive(false);
-    //             }
-    //             else
-    //             {
-    //                 Debug.Log("ERROR: Invalid neighboring object index.");
-    //             }
-
-
-    //         }
-
-    //         // no collisions detected -> keep cell active, change to non-trigger, move to 'terrain'
-    //         else
-    //         {
-    //             childCollider.isTrigger = false;
-    //             childCell.layer = terrainLayerNum;
-    //         }
-    // }
-
-    // private Collider[] GetNeighboringColliders(BoxCollider collider) {
-    //     Collider[] neighboringColliders = Physics.OverlapBox(
-    //         center: collider.transform.position + (collider.transform.rotation * collider.center),
-    //         halfExtents: Vector3.Scale(collider.size * 0.5f, collider.transform.lossyScale),
-    //         orientation: collider.transform.rotation,
-    //         layerMask: terrainLayerMask
-    //     );
-    //     Debug.Log($"{neighboringColliders.Length} colliders detected");
-    //     return neighboringColliders;
-    // }
-
-    // // Check all terrain cells for collisions with neighboring cells
-    // public void CheckForCollisions()
-    // {
-
-    //     BoxCollider[] childColliders = transform.GetComponentsInChildren<BoxCollider>();
-    //     Debug.Log("Number of child colliders: " + childColliders.Length);
-    //     foreach (BoxCollider childCollider in childColliders)
-    //     {
-    //         // Get all overlapping colliders from neighbors
-    //         // Collider[] neighborColliders = Physics.OverlapBox(childCollider.bounds.center, childCollider.bounds.extents, childCollider.transform.rotation, terrainLayerMask);
-    //         Collider[] neighborColliders = GetNeighboringColliders(childCollider);
-
-    //         // (there should only be one?)
-    //         // Debug.Log("Number of neighbor colliders detected: " + neighborColliders.Length);
-
-    //         GameObject childCell = childCollider.gameObject;
-
-    //         // collision detected -> record in dictionary & then deactivate cell
-    //         if (neighborColliders.Length > 0)
-    //         {
-
-    //             // Debug.Log("Neighbor is terrain");
-    //             int neighborIndex = neighborColliders[0].transform.parent.gameObject.GetComponent<ObjectTerrain>().placedObjectIndex;
-    //             // GameObject neighbor = neighborCell.transform.parent.gameObject;
-    //             // int neighborIndex = neighbor.GetComponent<ObjectTerrain>().placedObjectIndex;
-    //             Debug.Log("Neighbor index: " + neighborIndex.ToString());
-
-    //             if (neighborIndex != -1)
-    //             {
-
-    //                 // if (inactiveCells.ContainsKey(neighborIndex))
-    //                 // {
-    //                 //     Debug.Log("Existing neighbor found");
-    //                 // }
-    //                 // else
-    //                 // {
-    //                 //     Debug.Log("New neighbor registered");
-    //                 // }
-
-    //                 inactiveCells[neighborIndex].Add(childCell);
-    //                 childCell.SetActive(false);
-    //             }
-    //             else
-    //             {
-    //                 Debug.Log("ERROR: Invalid neighboring object index.");
-    //             }
-
-
-    //         }
-
-    //         // no collisions detected -> keep cell active, change to non-trigger, move to 'terrain'
-    //         else
-    //         {
-    //             childCollider.isTrigger = false;
-    //             childCell.layer = terrainLayerNum;
-    //         }
-    //     }
-
-    // }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// A special kind of object/shape-placement state.
 public class InventoryState : I_BuildingState
 {
     GameObject selectedObject;
@@ -99,8 +100,7 @@ public class InventoryState : I_BuildingState
     // Deselect the currently selected object
     private void ResetSelection() {
         if (selectedObject != null) {
-            Debug.Log("Reset selection");
-            // selectedObject.GetComponent<PlacedObjectData>().HideOutline();
+            // Debug.Log("Reset selection");
             objectDiscovery.HideHoverUI();
             selectedData.HideOutline();
             selectedData.Shrink();

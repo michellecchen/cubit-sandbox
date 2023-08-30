@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// State for placing objects in the overworld through the Creative Menu
 // Inherits from a 'building state' interface
 public class PlacementState : I_BuildingState
 {

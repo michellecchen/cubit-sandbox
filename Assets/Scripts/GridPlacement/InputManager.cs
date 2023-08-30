@@ -46,14 +46,11 @@ public class InputManager : MonoBehaviour
     public Vector3 GetGridSelectionPos() {
 
         Vector3 mousePos = Input.mousePosition;
-        // Block selection of objects that aren't rendered by the camera
-        // mousePos.z = _playerCam.nearClipPlane; // hmmm
         
         // Raycast
         Ray ray = _playerCam.ScreenPointToRay(mousePos);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100f, terrainLayerMask)) {
-            //Debug.Log("clicked terrain");
             lastPos = hit.point;
         }
         
