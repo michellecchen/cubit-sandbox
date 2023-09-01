@@ -68,7 +68,8 @@ public class PlacementState : I_BuildingState
         // Reset num rotations
         numRotations = 0;
         // Close dropdown
-        creativeMenu.HideMenu();
+        // creativeMenu.HideMenu();
+        creativeMenu.OnExitPlacementState();
     }
 
     // MODIFIED: Now returns false if not placed, true if placed

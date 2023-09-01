@@ -6,15 +6,13 @@ public class PlaceObject : MonoBehaviour
 {
 
     [SerializeField]
-    // List of all currently placed objects
-    // TODO: Update this to be a dictionary instead, where key=index and value=GameObject
-    private List<GameObject> placedObjects = new();
+    private List<GameObject> placedObjects = new();     // List of all currently placed objects
 
     [SerializeField]
     private ObjectTerrainManager objectTerrain;
 
     // Place the object at the specified position in the world,
-    //      with the specified number of 90-degreerotations around the y-axis
+    //      with the specified number of 90-degree rotations around the y-axis
     // Return: Index of the newly placed object in the list of all placed objects
     public int Place(GameObject objectPrefab, Vector3 worldPosition, int numRotations) {
 

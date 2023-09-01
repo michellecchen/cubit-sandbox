@@ -6,8 +6,6 @@ using UnityEngine;
 // Entered through the Creative Menu's Delete option.
 public class RemovalState : I_BuildingState
 {
-    // Index of the object from the placed objects list
-    private int gameObjectIndex = -1;
 
     // Input manager - for detecting clicks on removable objects
     InputManager inputManager;
@@ -21,15 +19,19 @@ public class RemovalState : I_BuildingState
 
     AudioManager audioManager;
 
+    CreativeMenu creativeMenu;
+
     // Constructor
-    public RemovalState(InputManager inputManager, Grid grid, GridData gridPlacementData, PlaceObject placeObject, DisplayObjectPreview previewObject, AudioManager audioManager) {
-        
+    public RemovalState(InputManager inputManager, Grid grid, GridData gridPlacementData, PlaceObject placeObject, DisplayObjectPreview previewObject, AudioManager audioManager, CreativeMenu creativeMenu)
+    {
+
         this.inputManager = inputManager;
         this.grid = grid;
         this.gridPlacementData = gridPlacementData;
         this.placeObject = placeObject;
         this.previewObject = previewObject;
         this.audioManager = audioManager;
+        this.creativeMenu = creativeMenu;
 
         previewObject.DisplayRemovalPreview();
     }
@@ -37,28 +39,39 @@ public class RemovalState : I_BuildingState
     #region Interface methods
 
     // TODO: EDIT
-    public void UpdatePlacementState(Vector3Int gridPos) {
+    public void UpdatePlacementState(Vector3Int gridPos)
+    {
         // Validate if the clicked position contains a removable object
         bool isRemovable = RemovableObjectAt(gridPos);
-        
+
         Vector3 worldPos = grid.CellToWorld(gridPos);
         previewObject.UpdatePreview(worldPos, isRemovable);
     }
 
-    public void ExitPlacementState() {
+    public void ExitPlacementState()
+    {
         previewObject.HidePreview();
+        creativeMenu.OnExitRemovalState();
     }
 
-    public bool OnClickDetected(Vector3Int gridPos) {
+    public bool OnClickDetected(Vector3Int gridPos)
+    {
 
         GameObject clickedObject = inputManager.GetClickedObject();
-        
-        if (clickedObject == null) {
+
+        if (clickedObject == null)
+        {
             return false;
         }
 
         // Extract relevant info from object detected via raycasted click
-        ObjectPlacement placementData = clickedObject.GetComponent<PlacedObjectData>().placementData;
+        PlacedObjectData objectData = clickedObject.GetComponent<PlacedObjectData>();
+        if (objectData == null)
+        {
+            return false;
+        }
+        
+        ObjectPlacement placementData = objectData.placementData;
         Vector3Int occupiedCell = placementData.occupiedPositions[0];
         // Remove from data
         int removedObjectID = gridPlacementData.RemoveObjectAt(occupiedCell);
@@ -70,11 +83,13 @@ public class RemovalState : I_BuildingState
         return true;
     }
 
-    public void OnRotateKeyPressed() {
+    public void OnRotateKeyPressed()
+    {
         // ...do nothing
     }
 
-    public void OnInventoryKeyPressed() {
+    public void OnInventoryKeyPressed()
+    {
         //...do nothing
     }
 
@@ -82,7 +97,8 @@ public class RemovalState : I_BuildingState
 
     // Check if there's a removable object that exists at the clicked position
     // Returns true if there is a removable object, and false if there isn't
-    private bool RemovableObjectAt(Vector3Int gridPos) {
+    private bool RemovableObjectAt(Vector3Int gridPos)
+    {
         // Here, we take advantage of the fact that an 'illegal' placement means the space is already occupied by an object.
         // If an object exists at this space, that means it's removable.
         return !(gridPlacementData.LegalPlacementAt(gridPos, Vector3Int.one));

@@ -221,7 +221,7 @@ public class PlacementManager : MonoBehaviour
         gridPreview.SetActive(true);
 
         // Instantiate the removal state
-        buildingState = new RemovalState(_inputManager, grid, gridPlacementData, placer, preview, audioManager);
+        buildingState = new RemovalState(_inputManager, grid, gridPlacementData, placer, preview, audioManager, creativeMenu);
 
         // Attach listeners to events
         _inputManager.OnClick += PlaceObject;
@@ -274,7 +274,7 @@ public class PlacementManager : MonoBehaviour
     }
 
     // Cancel the process of placing an object
-    private void CancelPlacement()
+    public void CancelPlacement()
     {
 
         if (buildingState == null)
