@@ -9,6 +9,15 @@ public class InventorySlot : MonoBehaviour
 
     public int objectID = -1;
 
+    // Number of objects with the same ID that are currently stored at this slot
+    [HideInInspector]
+    public int objectCounter = 0;
+
+    // In inventory panel, at the bottom of the screen
+    private RectTransform _rectTransform;
+    private Vector3 defaultScale;           // when unselected
+    private Vector3 selectedScale;          // when selected
+
     private Button _button;
     private TMP_Text _textCounter;
 
@@ -17,14 +26,14 @@ public class InventorySlot : MonoBehaviour
     private GameObject icon;
     private LayerMask renderLayer;
 
-    // Number of objects with the same ID that are currently stored at this slot
-    [SerializeField]
-    private int objectCounter = 0;
-
     void Start()
     {
+        _rectTransform = GetComponent<RectTransform>();
         _button = GetComponent<Button>();
         _textCounter = GetComponentInChildren<TMP_Text>();
+
+        selectedScale = (Vector3.one * 1.1f);
+        defaultScale = (Vector3.one * 0.85f);
 
         _button.interactable = false;                           // Disable the button interaction initially, since the slot is empty
         UpdateCounter();                                        // Set the initial text counter to be empty (0)
@@ -60,6 +69,7 @@ public class InventorySlot : MonoBehaviour
             else {                              // if there are no objects left
                 objectID = -1;                      // reset object ID
                 _button.interactable = false;       // disable button interactions again (empty slot)
+                DeselectUI();
                 ClearIcon();
 
             }
@@ -103,5 +113,15 @@ public class InventorySlot : MonoBehaviour
             icon = null;
             Destroy(thisIcon);
         }
+    }
+
+    // Update the UI to reflect this current slot's selected state,
+    // where player is actively extracting objects from this slot
+    public void SelectUI() {
+        _rectTransform.localScale = selectedScale;
+    }
+
+    public void DeselectUI() {
+        _rectTransform.localScale = defaultScale;
     }
 }

@@ -21,7 +21,8 @@ public class InventoryManager : MonoBehaviour
     private int _numOccupiedSlots = 0;
 
     // Maximum number of objects that can be stored in the inventory
-    private int _maxSize;
+    [HideInInspector]
+    public int _maxSize;
 
     [SerializeField]
     private ObjectDatabaseSO database;
@@ -34,6 +35,8 @@ public class InventoryManager : MonoBehaviour
     // Player gains information about it & thus 'discovers' it
     [SerializeField]
     private ObjectDiscovery objectDiscovery;
+    [SerializeField]
+    private DisplayInventory displayInventory;
 
     void Start() {
         if (slots.Length > 0) {             // The array is already populated in the inspector.
@@ -89,6 +92,10 @@ public class InventoryManager : MonoBehaviour
                 storedObjectDict[objectID] = slotIndex;             // update dictionary to track newly stored object type
                 
                 _numOccupiedSlots += 1;
+
+                if (_numOccupiedSlots == 1) {
+                    displayInventory.ToggleEmptyPrompt();
+                }
             }
 
             AddToSlot(database.objects[objectID].prefab, objectID, slotIndex);
@@ -99,7 +106,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    // Called upon button click
+    // Called upon button click -- from panel
     // Enter the 'inventory placement' state, where we place objects in the overworld
     // by removing them from the inventory
     public void StartRemovingFromInventory(int slotIndex) {
@@ -112,6 +119,8 @@ public class InventoryManager : MonoBehaviour
             if (placementManager != null) {
                 int numRemainingObjects = slots[slotIndex].GetObjectCount();
                 placementManager.StartInventoryPlacement(removedObjectID, slotIndex, numRemainingObjects);       // slotIndex to allow us to return the object to this slot in case player exits placement
+                // Update UI to reflect current inventory object being placed
+                slots[slotIndex].SelectUI();
             }
             else {
                 Debug.Log("Placement manager is null; make sure it's been assigned in the inspector.");
@@ -132,13 +141,29 @@ public class InventoryManager : MonoBehaviour
 
     // UI updater
     private void AddToSlot(GameObject objectPrefab, int objectID, int slotIndex) {
+        
+        // Update panel display
         slots[slotIndex].AddObjectToSlot(objectPrefab, objectID);
+        
+        // Update fullscreen display
+        displayInventory.AddToSlot(slotIndex, objectPrefab, slots[slotIndex].objectCounter, objectID);
     }
 
     // CALLER: PlacementManager
     public int RemoveFromSlot(int slotIndex) {
+        
+        // Update panel display
         slots[slotIndex].RemoveObjectFromSlot();
+        
+        // Update fullscreen display
+        displayInventory.RemoveFromSlot(slotIndex, slots[slotIndex].objectCounter);
+
         return slots[slotIndex].GetObjectCount();
+    }
+
+    // CALLER: PlacementManager (in CancelPlacement_ReturnToInventory())
+    public void DeselectSlotUI(int slotIndex) {
+        slots[slotIndex].DeselectUI();
     }
 
 }

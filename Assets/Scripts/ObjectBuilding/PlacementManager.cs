@@ -304,6 +304,8 @@ public class PlacementManager : MonoBehaviour
 
         CancelPlacement();
 
+        inventory.DeselectSlotUI(_tempInventoryIndex);
+
         // Detach listeners from events
         _inputManager.OnClick -= PlaceObject_UpdateInventory;
         _inputManager.OnRotate -= RotateObject;

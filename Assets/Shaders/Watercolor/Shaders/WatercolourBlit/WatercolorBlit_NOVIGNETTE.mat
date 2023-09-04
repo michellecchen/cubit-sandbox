@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WatercolourBlit
+  m_Name: WatercolorBlit_NOVIGNETTE
   m_Shader: {fileID: -6465566751694194690, guid: cd64943b2d0f59b408cab28c090affdd,
     type: 3}
   m_Parent: {fileID: 0}
@@ -42,9 +42,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _NoiseScale: -50
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _UseVignette: 1
+    - _UseVignette: 0
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &1058838401931418115
